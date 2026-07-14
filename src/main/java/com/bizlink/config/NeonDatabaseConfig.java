@@ -3,7 +3,7 @@ package com.bizlink.config;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,7 @@ import java.nio.charset.StandardCharsets;
  */
 @Slf4j
 @Configuration
-@ConditionalOnExpression("T(org.springframework.util.StringUtils).hasText('${DATABASE_URL:}') || T(org.springframework.util.StringUtils).hasText('${DB_URL:}')")
+@ConditionalOnProperty(name = {"DATABASE_URL", "DB_URL"}, matchIfMissing = false)
 public class NeonDatabaseConfig {
 
     @Bean
@@ -50,7 +50,8 @@ public class NeonDatabaseConfig {
     static ParsedUrl parsePostgresUrl(String databaseUrl) {
         String normalized = databaseUrl
                 .replaceFirst("^jdbc:", "")
-                .replaceFirst("^postgres://", "postgresql://");
+                .replaceFirst("^postgres://", "postgresql://")
+                .replaceFirst("^postgresql://", "postgresql://");
 
         URI uri = URI.create(normalized);
         String username = "";
