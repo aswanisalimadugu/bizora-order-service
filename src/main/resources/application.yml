@@ -2,11 +2,10 @@ spring:
   application:
     name: bizlink
   datasource:
-    # Local dev: DB_URL + DB_USERNAME + DB_PASSWORD
-    # Neon/production: set DATABASE_URL (postgresql://...) — see NeonDatabaseConfig
-    url: ${DB_URL:jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:bizlink}}
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:}
+    # Render / Cloud Run: use DATABASE_URL or DB_URL
+    url: ${DB_URL:${DATABASE_URL:postgresql://bizlink_owner:npg_2zSrUa5wITfM@ep-dawn-queen-aoobagtz-pooler.c-2.ap-southeast-1.aws.neon.tech/bizlink?sslmode=require}}
+    username: ${DB_USERNAME:bizlink_owner}
+    password: ${DB_PASSWORD:npg_2zSrUa5wITfM}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
