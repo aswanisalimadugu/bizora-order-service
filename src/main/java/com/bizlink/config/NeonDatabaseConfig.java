@@ -3,11 +3,12 @@ package com.bizlink.config;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.util.StringUtils;
 
 import javax.sql.DataSource;
 import java.net.URI;
@@ -20,12 +21,16 @@ import java.nio.charset.StandardCharsets;
  */
 @Slf4j
 @Configuration
-@ConditionalOnProperty(name = "DATABASE_URL")
+@ConditionalOnExpression("T(org.springframework.util.StringUtils).hasText('${DATABASE_URL:}') || T(org.springframework.util.StringUtils).hasText('${DB_URL:}')")
 public class NeonDatabaseConfig {
 
     @Bean
     @Primary
-    public DataSource neonDataSource(@Value("${DATABASE_URL}") String databaseUrl) {
+    public DataSource neonDataSource(@Value("${DATABASE_URL:${DB_URL:}}") String databaseUrl) {
+        if (!StringUtils.hasText(databaseUrl)) {
+            throw new IllegalArgumentException("DATABASE_URL or DB_URL must be configured");
+        }
+
         ParsedUrl parsed = parsePostgresUrl(databaseUrl);
 
         HikariDataSource ds = DataSourceBuilder.create()
@@ -42,7 +47,7 @@ public class NeonDatabaseConfig {
         return ds;
     }
 
-    private static ParsedUrl parsePostgresUrl(String databaseUrl) {
+    static ParsedUrl parsePostgresUrl(String databaseUrl) {
         String normalized = databaseUrl
                 .replaceFirst("^jdbc:", "")
                 .replaceFirst("^postgres://", "postgresql://");
@@ -85,5 +90,5 @@ public class NeonDatabaseConfig {
         }
     }
 
-    private record ParsedUrl(String jdbcUrl, String username, String password) {}
+    static record ParsedUrl(String jdbcUrl, String username, String password) {}
 }
