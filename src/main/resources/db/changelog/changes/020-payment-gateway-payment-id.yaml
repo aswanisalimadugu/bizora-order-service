@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 020-payment-gateway-payment-id
+      author: bizlink
+      changes:
+        - addColumn:
+            tableName: payments
+            columns:
+              - column:
+                  name: gateway_payment_id
+                  type: VARCHAR(150)
+                  remarks: Razorpay payment id (transaction_id keeps the Razorpay order id)

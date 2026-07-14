@@ -1,0 +1,54 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005-create-customer-table
+      author: bizlink
+      changes:
+        - createTable:
+            tableName: customers
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: business_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: mobile
+                  type: VARCHAR(15)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(150)
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: customers
+            baseColumnNames: business_id
+            referencedTableName: business
+            referencedColumnNames: id
+            constraintName: fk_customer_business
+        - createIndex:
+            tableName: customers
+            indexName: idx_customer_business_id
+            columns:
+              - column:
+                  name: business_id

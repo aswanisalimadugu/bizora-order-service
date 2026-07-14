@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: 018-add-plan-max-categories
+      author: bizlink
+      changes:
+        - addColumn:
+            tableName: subscription_plans
+            columns:
+              - column:
+                  name: max_categories
+                  type: INT
+                  remarks: "Null means unlimited categories"
+        - update:
+            tableName: subscription_plans
+            columns:
+              - column:
+                  name: max_categories
+                  valueNumeric: 10
+            where: name = 'Starter'

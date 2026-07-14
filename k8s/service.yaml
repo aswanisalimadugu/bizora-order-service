@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bizlink-api
+  namespace: bizlink
+  labels:
+    app: bizlink-api
+spec:
+  type: ClusterIP
+  selector:
+    app: bizlink-api
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8080

@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: 013-ensure-anji-super-admin
+      author: bizlink
+      changes:
+        - sql:
+            sql: |
+              INSERT INTO users (id, name, email, mobile, password, role, status, created_at, updated_at)
+              SELECT 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'Anji Admin', 'anji@gmail.com', '9876543210',
+                     '$2a$10$j9itfFR9IWCWnRyM5N6BXeQyYglOI4pWCAluQqQcgNzHAXHZS2Ci.', 'ADMIN', 'ACTIVE',
+                     CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+              WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'anji@gmail.com');
+        - sql:
+            sql: |
+              UPDATE users
+              SET password = '$2a$10$j9itfFR9IWCWnRyM5N6BXeQyYglOI4pWCAluQqQcgNzHAXHZS2Ci.',
+                  role = 'ADMIN',
+                  status = 'ACTIVE',
+                  name = 'Anji Admin'
+              WHERE email = 'anji@gmail.com';

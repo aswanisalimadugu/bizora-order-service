@@ -1,0 +1,46 @@
+databaseChangeLog:
+  - changeSet:
+      id: 019-order-payment-and-options
+      author: bizlink
+      changes:
+        - addColumn:
+            tableName: products
+            columns:
+              - column:
+                  name: options
+                  type: TEXT
+                  remarks: Comma-separated customization options (e.g. Spicy, Double masala)
+        - addColumn:
+            tableName: order_items
+            columns:
+              - column:
+                  name: selected_option
+                  type: VARCHAR(100)
+        - addColumn:
+            tableName: orders
+            columns:
+              - column:
+                  name: payment_status
+                  type: VARCHAR(30)
+                  defaultValue: UNPAID
+                  constraints:
+                    nullable: false
+        - addColumn:
+            tableName: payments
+            columns:
+              - column:
+                  name: order_id
+                  type: UUID
+        - addForeignKeyConstraint:
+            baseTableName: payments
+            baseColumnNames: order_id
+            referencedTableName: orders
+            referencedColumnNames: id
+            constraintName: fk_payment_order
+            onDelete: SET NULL
+        - createIndex:
+            tableName: payments
+            indexName: idx_payment_order_id
+            columns:
+              - column:
+                  name: order_id

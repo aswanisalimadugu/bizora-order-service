@@ -1,0 +1,67 @@
+databaseChangeLog:
+  - changeSet:
+      id: 009-create-subscription-table
+      author: bizlink
+      changes:
+        - createTable:
+            tableName: subscriptions
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: business_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: plan_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: start_date
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: end_date
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(30)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: subscriptions
+            baseColumnNames: business_id
+            referencedTableName: business
+            referencedColumnNames: id
+            constraintName: fk_subscription_business
+        - addForeignKeyConstraint:
+            baseTableName: subscriptions
+            baseColumnNames: plan_id
+            referencedTableName: subscription_plans
+            referencedColumnNames: id
+            constraintName: fk_subscription_plan
+        - createIndex:
+            tableName: subscriptions
+            indexName: idx_subscription_business_id
+            columns:
+              - column:
+                  name: business_id

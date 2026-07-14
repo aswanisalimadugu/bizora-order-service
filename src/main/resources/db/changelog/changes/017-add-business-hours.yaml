@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: 017-add-business-hours
+      author: bizlink
+      changes:
+        - addColumn:
+            tableName: business
+            columns:
+              - column:
+                  name: business_hours
+                  type: VARCHAR(500)
+              - column:
+                  name: is_open
+                  type: BOOLEAN
+                  defaultValueBoolean: true

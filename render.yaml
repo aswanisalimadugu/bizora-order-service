@@ -1,0 +1,35 @@
+# Render.com backend + Neon PostgreSQL (free)
+# 1. Create DB at https://neon.tech → copy connection string
+# 2. Deploy: Render Dashboard → New → Blueprint → connect repo
+# 3. Set DATABASE_URL in Render env vars (Neon pooled connection recommended)
+
+services:
+  - type: web
+    name: bizlink-api
+    runtime: docker
+    dockerfilePath: Dockerfile
+    plan: free
+    healthCheckPath: /swagger-ui.html
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DEV_MODE
+        value: "false"
+      - key: STORAGE_TYPE
+        value: local
+      - key: UPLOAD_DIR
+        value: /app/uploads
+      - key: PUBLIC_BASE_URL
+        sync: false
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false
+      - key: RAZORPAY_WEBHOOK_SECRET
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false

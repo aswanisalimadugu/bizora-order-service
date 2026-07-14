@@ -1,0 +1,91 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-create-business-table
+      author: bizlink
+      changes:
+        - createTable:
+            tableName: business
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: owner_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: business_name
+                  type: VARCHAR(150)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: slug
+                  type: VARCHAR(150)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: description
+                  type: TEXT
+              - column:
+                  name: logo_url
+                  type: VARCHAR(500)
+              - column:
+                  name: cover_image_url
+                  type: VARCHAR(500)
+              - column:
+                  name: phone
+                  type: VARCHAR(15)
+              - column:
+                  name: whatsapp_number
+                  type: VARCHAR(15)
+              - column:
+                  name: address
+                  type: TEXT
+              - column:
+                  name: city
+                  type: VARCHAR(100)
+              - column:
+                  name: state
+                  type: VARCHAR(100)
+              - column:
+                  name: pincode
+                  type: VARCHAR(10)
+              - column:
+                  name: latitude
+                  type: DECIMAL(10,7)
+              - column:
+                  name: longitude
+                  type: DECIMAL(10,7)
+              - column:
+                  name: active
+                  type: BOOLEAN
+                  defaultValueBoolean: true
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: business
+            baseColumnNames: owner_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_business_owner
+        - createIndex:
+            tableName: business
+            indexName: idx_business_owner_id
+            columns:
+              - column:
+                  name: owner_id

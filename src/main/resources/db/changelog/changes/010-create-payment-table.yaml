@@ -1,0 +1,63 @@
+databaseChangeLog:
+  - changeSet:
+      id: 010-create-payment-table
+      author: bizlink
+      changes:
+        - createTable:
+            tableName: payments
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: business_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: subscription_id
+                  type: UUID
+              - column:
+                  name: transaction_id
+                  type: VARCHAR(150)
+              - column:
+                  name: gateway
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: DECIMAL(10,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(30)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: payments
+            baseColumnNames: business_id
+            referencedTableName: business
+            referencedColumnNames: id
+            constraintName: fk_payment_business
+        - addForeignKeyConstraint:
+            baseTableName: payments
+            baseColumnNames: subscription_id
+            referencedTableName: subscriptions
+            referencedColumnNames: id
+            constraintName: fk_payment_subscription
+        - createIndex:
+            tableName: payments
+            indexName: idx_payment_business_id
+            columns:
+              - column:
+                  name: business_id

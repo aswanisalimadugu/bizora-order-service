@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: 021-business-razorpay-and-payment-indexes
+      author: bizlink
+      changes:
+        - addColumn:
+            tableName: business
+            columns:
+              - column:
+                  name: razorpay_key_id
+                  type: varchar(100)
+              - column:
+                  name: razorpay_key_secret_enc
+                  type: text
+              - column:
+                  name: razorpay_webhook_secret_enc
+                  type: text
+              - column:
+                  name: payment_mode
+                  type: varchar(30)
+                  defaultValue: NOT_CONFIGURED
+                  constraints:
+                    nullable: false
+        - sql:
+            sql: >
+              CREATE UNIQUE INDEX IF NOT EXISTS uk_payments_transaction_id
+              ON payments (transaction_id) WHERE transaction_id IS NOT NULL;
+        - sql:
+            sql: >
+              CREATE UNIQUE INDEX IF NOT EXISTS uk_payments_gateway_payment_id
+              ON payments (gateway_payment_id) WHERE gateway_payment_id IS NOT NULL;
+      rollback:
+        - sql:
+            sql: DROP INDEX IF EXISTS uk_payments_gateway_payment_id;
+        - sql:
+            sql: DROP INDEX IF EXISTS uk_payments_transaction_id;
+        - dropColumn:
+            tableName: business
+            columnName: payment_mode
+        - dropColumn:
+            tableName: business
+            columnName: razorpay_webhook_secret_enc
+        - dropColumn:
+            tableName: business
+            columnName: razorpay_key_secret_enc
+        - dropColumn:
+            tableName: business
+            columnName: razorpay_key_id

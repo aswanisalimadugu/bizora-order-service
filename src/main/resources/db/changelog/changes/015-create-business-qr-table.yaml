@@ -1,0 +1,46 @@
+databaseChangeLog:
+  - changeSet:
+      id: 015-create-business-qr-table
+      author: bizlink
+      changes:
+        - createTable:
+            tableName: business_qr
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: business_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_business_qr_business
+                    references: business(id)
+                    deleteCascade: true
+              - column:
+                  name: label
+                  type: VARCHAR(100)
+              - column:
+                  name: qr_image_path
+                  type: VARCHAR(500)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: scan_url
+                  type: VARCHAR(500)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+        - createIndex:
+            indexName: idx_business_qr_business_id
+            tableName: business_qr
+            columns:
+              - column:
+                  name: business_id

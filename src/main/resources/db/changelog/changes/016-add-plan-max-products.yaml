@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: 016-add-plan-max-products
+      author: bizlink
+      changes:
+        - addColumn:
+            tableName: subscription_plans
+            columns:
+              - column:
+                  name: max_products
+                  type: INT
+                  remarks: "Null means unlimited products"
+        - update:
+            tableName: subscription_plans
+            columns:
+              - column:
+                  name: max_products
+                  valueNumeric: 20
+            where: name = 'Starter'
