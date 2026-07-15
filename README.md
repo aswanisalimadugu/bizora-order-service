@@ -16,7 +16,7 @@ Digital Business Card + Mini Website + WhatsApp CRM SaaS platform.
 ## Project Location
 
 ```
-C:\Users\anjir\Desktop\personal\Anji\dream project\bizlink
+D:\ASHU-PROJECTS\bizlink/bizora-backend
 ```
 
 ## Prerequisites
@@ -52,7 +52,7 @@ CREATE DATABASE bizlink;
 ## Run Backend
 
 ```bash
-cd "C:\Users\anjir\Desktop\personal\Anji\dream project\bizlink"
+cd "D:\ASHU-PROJECTS\bizlink/bizora-backend"
 mvn spring-boot:run
 ```
 
@@ -110,7 +110,7 @@ Liquibase automatically creates/updates on app startup:
 
 | Email | Password | Role |
 |-------|----------|------|
-| `anji@gmail.com` | `Anji@ashi@201` | ADMIN |
+| `username` | `password` | ADMIN |
 
 Migrations: `012-add-admin-fields.yaml`, `013-ensure-anji-super-admin.yaml`
 
